@@ -57,3 +57,36 @@ mask, and gradient flow.
 - **Geometric statement first, code second.** The README/docstrings
   derive the formula from the Minkowski embedding. Keep that grounding
   visible — it's the reason the primitive exists.
+
+## Evidence path
+
+The primitive is well-tested code with no empirical result behind it
+yet. Until one of these lands, the repo is a construction, not a
+contribution. Two candidate first experiments, ordered by cost-to-
+evidence ratio:
+
+1. **Anti-duplication retrieval bench.** Pick a small image or text
+   retrieval task. Two identical encoders, one with standard
+   attention pooling, one with `EigenAttention` pooling over
+   patches/tokens. Measure **both** relevance (precision@k) **and**
+   inter-result diversity (pairwise distance among top-k).
+   Hypothesis: EigenAttention preserves relevance while increasing
+   diversity. If true, that's a real citable contribution; if false,
+   the primitive doesn't carry weight and the repo should be archived.
+
+2. **Mode-collapse stress test in a tiny VAE / autoencoder.** Same
+   idea, different surface. Train identical AEs except for the
+   attention layer; measure latent-space coverage (entropy of nearest-
+   neighbor assignment over a held-out set). Easier to get a clean
+   signal than retrieval — fewer confounders.
+
+Either experiment must be **parameter-matched** with a **symmetric
+success criterion** both models could in principle satisfy. The
+EigenFunction repo's 4/4-vs-0/4 result failed both of those — don't
+reintroduce that style.
+
+**Amplification moves deferred until there's a result to amplify:**
+arXiv / blog writeup, Hugging Face model card, dropping into
+iLambdaAi's LM pipeline (polarity mismatch — diversity-seeking
+attention is wrong for language modeling). Don't queue any of these
+before an experiment lands.
